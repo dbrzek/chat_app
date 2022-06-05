@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+
+import './pickers/user_image_picker.dart';
 
 class AuthForm extends StatefulWidget {
   //const AuthForm({ Key? key }) : super(key: key);
@@ -7,6 +11,7 @@ class AuthForm extends StatefulWidget {
     String eamil,
     String password,
     String username,
+    File image,
     bool isLogin,
     BuildContext ctx,
   ) submitFn;
@@ -26,11 +31,25 @@ class _AuthFormState extends State<AuthForm> {
   String _userEmail = '';
   String _userPassword = '';
   String _userName = '';
+  File _userImageFile;
+
+  void _pickedImage(File image) {
+    _userImageFile = image;
+  }
 
   void _trySubmit() {
     final isValid = _formKey.currentState
         .validate(); // sprawdzenie czy wprowadzone dane są poprawne
     FocusScope.of(context).unfocus(); // zamknięcie klawiatury
+
+    if (_userImageFile == null && !_isLogin) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please pick an image.'),
+        ),
+      );
+      return;
+    }
 
     if (isValid) {
       _formKey.currentState.save();
@@ -38,6 +57,7 @@ class _AuthFormState extends State<AuthForm> {
         _userEmail.trim(), // trim() - usuwa białe znaki tj. tab, spacje itp.
         _userPassword.trim(),
         _userName.trim(),
+        _userImageFile,
         _isLogin,
         context,
       );
@@ -58,6 +78,7 @@ class _AuthFormState extends State<AuthForm> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  if (!_isLogin) UserImagePicker(_pickedImage),
                   TextFormField(
                     key: ValueKey('email'),
                     validator: (value) {
@@ -104,21 +125,23 @@ class _AuthFormState extends State<AuthForm> {
                     height: 12,
                   ),
                   if (widget.isLoading) CircularProgressIndicator(),
-                  if (!widget.isLoading) RaisedButton(
-                    onPressed: _trySubmit,
-                    child: Text(_isLogin ? 'Login' : 'Signup'),
-                  ),
-                  if (!widget.isLoading) FlatButton(
-                    onPressed: () {
-                      setState(() {
-                        _isLogin = !_isLogin;
-                      });
-                    },
-                    child: Text(_isLogin
-                        ? 'Create new account'
-                        : 'I already have an account'),
-                    textColor: Colors.green,
-                  ),
+                  if (!widget.isLoading)
+                    RaisedButton(
+                      onPressed: _trySubmit,
+                      child: Text(_isLogin ? 'Login' : 'Signup'),
+                    ),
+                  if (!widget.isLoading)
+                    FlatButton(
+                      onPressed: () {
+                        setState(() {
+                          _isLogin = !_isLogin;
+                        });
+                      },
+                      child: Text(_isLogin
+                          ? 'Create new account'
+                          : 'I already have an account'),
+                      textColor: Colors.green,
+                    ),
                 ],
               ),
             ),
