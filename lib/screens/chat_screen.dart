@@ -1,20 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../widgets/chat/messages.dart';
 import '../widgets/chat/new_message.dart';
 
-class ChatScreen extends StatelessWidget {
-  //const ChatScreen({ Key? key }) : super(key: key);
+class ChatScreen extends StatefulWidget {
+  @override
+  _ChatScreenState createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  @override
+  void initState() {
+    super.initState();
+    final fbm = FirebaseMessaging.instance;
+    fbm.requestPermission();
+    FirebaseMessaging.onMessage.listen((message) {
+      print(message);
+      return;
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+       print(message);
+      return;
+    });
+    fbm.subscribeToTopic('chat');
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter Chat'),
+        title: Text('FlutterChat'),
         actions: [
           DropdownButton(
+            underline: Container(),
             icon: Icon(
               Icons.more_vert,
               color: Theme.of(context).primaryIconTheme.color,
@@ -23,7 +43,7 @@ class ChatScreen extends StatelessWidget {
               DropdownMenuItem(
                 child: Container(
                   child: Row(
-                    children: [
+                    children: <Widget>[
                       Icon(Icons.exit_to_app),
                       SizedBox(width: 8),
                       Text('Logout'),
@@ -35,7 +55,7 @@ class ChatScreen extends StatelessWidget {
             ],
             onChanged: (itemIdentifier) {
               if (itemIdentifier == 'logout') {
-                FirebaseAuth.instance.signOut(); //funkcja wylogowania
+                FirebaseAuth.instance.signOut();
               }
             },
           ),
@@ -43,8 +63,10 @@ class ChatScreen extends StatelessWidget {
       ),
       body: Container(
         child: Column(
-          children: [
-            Expanded(child: Messages(),),
+          children: <Widget>[
+            Expanded(
+              child: Messages(),
+            ),
             NewMessage(),
           ],
         ),

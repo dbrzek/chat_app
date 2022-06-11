@@ -1,25 +1,28 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class MessageBubble extends StatelessWidget {
-  //const MessageBubble({ Key? key }) : super(key: key);
-  MessageBubble(this.message, this.username, this.userImage, this.isMe,
-      {this.key});
+  MessageBubble(
+    this.message,
+    this.userName,
+    this.userImage,
+    this.isMe, {
+    this.key,
+  });
 
   final Key key;
   final String message;
-  final String username;
+  final String userName;
   final String userImage;
   final bool isMe;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
-      children: [
+      clipBehavior: Clip.none, children: [
         Row(
           mainAxisAlignment:
               isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
-          children: [
+          children: <Widget>[
             Container(
               decoration: BoxDecoration(
                 color: isMe ? Colors.grey[300] : Theme.of(context).accentColor,
@@ -31,14 +34,20 @@ class MessageBubble extends StatelessWidget {
                 ),
               ),
               width: 140,
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-              margin: EdgeInsets.symmetric(vertical: 15, horizontal: 8),
+              padding: EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: 16,
+              ),
+              margin: EdgeInsets.symmetric(
+                vertical: 16,
+                horizontal: 8,
+              ),
               child: Column(
                 crossAxisAlignment:
                     isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   Text(
-                    username,
+                    userName,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: isMe
@@ -62,14 +71,15 @@ class MessageBubble extends StatelessWidget {
         ),
         Positioned(
           top: 0,
-          left: isMe ? null :130,
-          right: isMe ? 130 :null,
+          left: isMe ? null : 120,
+          right: isMe ? 120 : null,
           child: CircleAvatar(
-            backgroundImage: NetworkImage(userImage),
+            backgroundImage: NetworkImage(
+              userImage,
+            ),
           ),
         ),
       ],
-      overflow: Overflow.visible,
     );
   }
 }

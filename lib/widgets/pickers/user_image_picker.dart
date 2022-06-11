@@ -4,45 +4,44 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UserImagePicker extends StatefulWidget {
-  //const UserImagePicker({ Key? key }) : super(key: key);
-  UserImagePicker(this.imagepickFn);
+  UserImagePicker(this.imagePickFn);
 
-  final void Function(File pickedImage) imagepickFn;
+  final void Function(File pickedImage) imagePickFn;
 
   @override
-  State<UserImagePicker> createState() => _UserImagePickerState();
+  _UserImagePickerState createState() => _UserImagePickerState();
 }
 
 class _UserImagePickerState extends State<UserImagePicker> {
   File _pickedImage;
 
   void _pickImage() async {
-    final pickedImageFile = await ImagePicker.pickImage(
+    final pickedImageFile = await ImagePicker().getImage(
       source: ImageSource.camera,
       imageQuality: 50,
       maxWidth: 150,
     );
     setState(() {
-      _pickedImage = pickedImageFile;
+      _pickedImage = File(pickedImageFile.path);
     });
-    widget.imagepickFn(pickedImageFile);
+    widget.imagePickFn(File(pickedImageFile.path));
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
+      children: <Widget>[
         CircleAvatar(
-          backgroundColor: Colors.grey,
           radius: 40,
+          backgroundColor: Colors.grey,
           backgroundImage:
               _pickedImage != null ? FileImage(_pickedImage) : null,
         ),
         FlatButton.icon(
+          textColor: Theme.of(context).primaryColor,
           onPressed: _pickImage,
           icon: Icon(Icons.image),
-          label: Text('Add image'),
-          textColor: Theme.of(context).primaryColor,
+          label: Text('Add Image'),
         ),
       ],
     );
