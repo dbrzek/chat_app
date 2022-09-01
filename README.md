@@ -1,16 +1,41 @@
 # chat_app
 
-A new Flutter project.
+It is the simple chat_app with one public chatroom, where users are authenticated by email and password. Application stored messages,images and users data in **firebase** and was created in **Flutter** framework.
 
-## Getting Started
+## Table of Contents
+* [App Features](#app-features)
+* [Presentation](#presentation)
+* [Packages used in project](#packages-used-in-project)
+* [Project Status](#project-status)
+* [Sources](#sources)
+* [Contact](#contact)
 
-This project is a starting point for a Flutter application.
+## App Features
+- Sign Up by Email, Password and Username.<br>
+- Add image of user.<br>
+- Login Using Email and Password.<br>
+- Send mesasages.<br>
+- Read messages.<br>
+- View of users image.<br>
+- Pushnotification when messages are received.<br><br>
 
-A few resources to get you started if this is your first Flutter project:
+## Presentation
+![Presentation](./presentation.gif)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Packages used in project:
+- [Firebase Core](https://pub.dev/packages/firebase_core)
+- [Firebase Auth](https://pub.dev/packages/firebase_auth)
+- [Firebase Storage](https://pub.dev/packages/firebase_storage)
+- [Firebase Messaging](https://pub.dev/packages/firebase_messaging)
+- [Cloud Firestore](https://pub.dev/packages/cloud_firestore)
+- [Image Picker](https://pub.dev/packages/image_picker)
+<br><br>
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Project Status
+The project is completed. However, I plan to add the ability to create your own chatroom with selected users in the future.
+
+## Sources
+The application was created during the course Flutter & Dart - The Complete Guide [2022 Edition] by Maximilian Schwarzmüller from Academind.
+
+## Contact
+Created by [@dbrzek](mailto:brzek.damian@gmail.com) - feel free to contact me!
